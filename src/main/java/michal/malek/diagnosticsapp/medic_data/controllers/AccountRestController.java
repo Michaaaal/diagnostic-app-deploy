@@ -3,7 +3,6 @@ package michal.malek.diagnosticsapp.medic_data.controllers;
 import com.google.api.services.drive.model.File;
 import lombok.RequiredArgsConstructor;
 import michal.malek.diagnosticsapp.medic_data.services.AccountService;
-import michal.malek.diagnosticsapp.medic_data.services.GoogleDriveService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,10 +64,7 @@ public class AccountRestController {
         return ResponseEntity.ok(accountService.findOwnedDiagnosticTests(refreshToken));
     }
 
-    @GetMapping("/remove-diagnostic-test")
-    public ResponseEntity<?> deleteDiagnosticTest(@CookieValue(name="refreshToken") String refreshToken ,String driveId) {
-        return accountService.removeDiagnosticTest(driveId, refreshToken);
-    }
+
 
 
 
