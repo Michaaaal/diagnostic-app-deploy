@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="../../static/img/icon.png" type="image/png">
+    <meta charset="UTF-8">
+    <title>DiagnoseYourself</title>
+    <link rel="stylesheet" th:href="@{/css/footer-fragment.css}">
+    <link rel="stylesheet" th:href="@{/css/menu-fragment.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:insert="~{fragments/menu-fragment :: menu}"></div>
+
+<div class="container">
+    <img src="/img/text-icon.png" width="50%" alt="Logo">
+
+    <!-- Welcome message -->
+    <div class="welcome-message">
+        <p class="gradient-text" th:if="${userEmail}" th:text="'Welcome Back, ' + ${userEmail}"></p>
+    </div>
+
+    <!-- Page Description -->
+    <div class="page-description">
+        <p>Welcome to DiagnoseYourself! Here, you can easily diagnose your health symptoms, monitor your well-being,<br> and get personalized insights to help you make informed decisions about your health. Explore our tools and resources to take charge of your health today.</p>
+        <p>Please Make sure to update your medic data before diagnosing yourself.</p>
+    </div>
+</div>
+
+<div th:insert="~{fragments/footer-fragment :: footer-fragment}"></div>
+</body>
+</html>

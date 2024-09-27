@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <title>Registration Form</title>
+    <script>
+        function togglePolicyDetails() {
+            var x = document.getElementById("policyDetails");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+<h1>Registration</h1>
+<p th:if="${message}" th:text="${message.message}" th:style="'color: ' + ${message.type.color}"></p>
+<form th:action="@{/register-post}" th:object="${userRegisterDTO}" method="post">
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" required />
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required />
+    </div>
+    <div>
+        <label for="password2">Confirm Password:</label>
+        <input type="password" id="password2" th:field="*{password2}" required />
+    </div>
+    <div>
+        <input type="checkbox" id="policy" th:field="*{policyAccepted}" required />
+        <label for="policy" onclick="togglePolicyDetails()">I accept the privacy policy (click to read more).</label>
+    </div>
+    <div id="policyDetails">
+        <h2>Privacy Policy</h2>
+        <p>We collect personal and usage data to provide and improve our services. We don’t sell your data but may share it with partners or as required by law. We protect your data but can’t guarantee complete security.</p>
+    </div>
+    <div>
+        <button type="submit">Register</button>
+    </div>
+</form>
+</div>
+</body>
+</html>
