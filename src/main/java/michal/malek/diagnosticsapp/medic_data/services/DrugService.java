@@ -8,10 +8,12 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.text.similarity.LevenshteinDistance;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -26,11 +28,13 @@ public class DrugService {
 
     private final DrugRepository drugRepository;
     @Getter
-    private final Path drugsCsvPath = Path.of("src/main/resources/other/drugs.csv");
-
+    @Value("classpath:/other/drugs.csv")
+    private Resource drugsCsvResource;
 
     public void updateDrugs() throws IOException {
-        try (Reader reader = Files.newBufferedReader(drugsCsvPath)) {
+        try (InputStream inputStream = drugsCsvResource.getInputStream();
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
             CSVFormat format = CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .withDelimiter(';')
@@ -44,12 +48,12 @@ public class DrugService {
                     String leafletUrl = record.get("Ulotka");
                     String characteristicsUrl = record.get("Charakterystyka");
 
-                    Drug drug = new Drug(id,productName,commonName,leafletUrl,characteristicsUrl);
+                    Drug drug = new Drug(id, productName, commonName, leafletUrl, characteristicsUrl);
 
-                    if(drugRepository.findByMedicId(id)==null){
+                    if (drugRepository.findByMedicId(id) == null) {
                         drugRepository.saveAndFlush(drug);
                         System.out.println("Drug Added");
-                    }else {
+                    } else {
                         System.out.println("Already exists");
                     }
 

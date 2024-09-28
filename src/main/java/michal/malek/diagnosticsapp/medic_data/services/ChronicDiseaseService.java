@@ -5,11 +5,12 @@ import michal.malek.diagnosticsapp.medic_data.models.ChronicDisease;
 import michal.malek.diagnosticsapp.medic_data.models.Drug;
 import michal.malek.diagnosticsapp.medic_data.repositories.ChronicDiseaseRepository;
 import org.apache.commons.text.similarity.LevenshteinDistance;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -22,22 +23,29 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ChronicDiseaseService {
     private final ChronicDiseaseRepository chronicDiseaseRepository;
-    private final Path diseasesPath = Path.of("src/main/resources/other/chronic_disease.txt");
 
-    public void updateChronicDiseases(){
-        try (BufferedReader reader = Files.newBufferedReader(diseasesPath)) {
+    @Value("classpath:/other/chronic_disease.txt")
+    private Resource diseasesResource;
+
+    public void updateChronicDiseases() {
+        try (InputStream inputStream = diseasesResource.getInputStream();
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
             String line;
             while ((line = reader.readLine()) != null) {
-                if(chronicDiseaseRepository.findByName(line) == null){
+                if (chronicDiseaseRepository.findByName(line) == null) {
                     ChronicDisease chronicDisease = new ChronicDisease(line);
                     chronicDiseaseRepository.saveAndFlush(chronicDisease);
                     System.out.println(line + " added ");
+                } else {
+                    System.out.println(line + " already exists ");
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error reading chronic diseases file", e);
         }
     }
+
 
     public Stream<ChronicDisease> findChronicDisease(String str) {
         List<ChronicDisease> allByNameContainingIgnoreCase = chronicDiseaseRepository.findAllByNameContainingIgnoreCase(str);

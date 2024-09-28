@@ -30,6 +30,7 @@ public class AccountService {
         try{
             chronicDiseaseService.updateChronicDiseases();
         }catch (RuntimeException e){
+            System.out.println(e.getMessage() + e.getStackTrace());
             redirectAttributes.addFlashAttribute("message", new AppResponse("Something went wrong", ResponseType.ERROR));
             return "redirect:/account/admin/dashboard";
         }
@@ -41,6 +42,7 @@ public class AccountService {
         try{
             drugService.updateDrugs();
         }catch (IOException e){
+            System.out.println(e.getMessage() + e.getStackTrace());
             redirectAttributes.addFlashAttribute("message", new AppResponse("Something went wrong", ResponseType.ERROR));
             return "redirect:/account/admin/dashboard";
         }
@@ -59,6 +61,7 @@ public class AccountService {
             try{
                 userDataService.addDrug(medicId, userUid);
             }catch (Exception e){
+                System.out.println(e.getMessage() + e.getStackTrace());
                 throw new RuntimeException("addDrugToUserData err");
             }
         return ResponseEntity.ok().build();
@@ -74,6 +77,7 @@ public class AccountService {
         try{
             userDataService.deleteDrug(medicId, userUid);
         }catch (Exception e){
+            System.out.println(e.getMessage() + e.getStackTrace());
             throw new RuntimeException("deleteDrug err");
         }
         return ResponseEntity.ok().build();
@@ -94,6 +98,7 @@ public class AccountService {
             try{
                 userDataService.addChronicDisease(name, userUid);
             }catch (Exception e){
+                System.out.println(e.getMessage() + e.getStackTrace());
                 throw new RuntimeException("addChronicDiseaseToUserData err");
             }
         return ResponseEntity.ok().build();
@@ -104,6 +109,7 @@ public class AccountService {
         try{
             userDataService.deleteChronicDisease(name, userUid);
         }catch (Exception e){
+            System.out.println(e.getMessage() + e.getStackTrace());
             throw new RuntimeException("delete chronic disease error");
         }
         return ResponseEntity.ok().build();
@@ -123,6 +129,7 @@ public class AccountService {
             redirectAttributes.addFlashAttribute("message", new AppResponse("Adding Personal data success", ResponseType.SUCCESS));
             return "redirect:/add-personal-data";
         }catch (Exception e){
+            System.out.println(e.getMessage() + e.getStackTrace());
             redirectAttributes.addFlashAttribute("message", new AppResponse("Adding data failed", ResponseType.ERROR));
             return "redirect:/add-personal-data";
         }
