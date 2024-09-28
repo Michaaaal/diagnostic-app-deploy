@@ -1,5 +1,6 @@
 package michal.malek.diagnosticsapp.medic_data.services;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import michal.malek.diagnosticsapp.medic_data.models.ChronicDisease;
 import michal.malek.diagnosticsapp.medic_data.models.Drug;
@@ -23,6 +24,9 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ChronicDiseaseService {
     private final ChronicDiseaseRepository chronicDiseaseRepository;
+
+    @Getter
+    private final Path diseasesPath = Path.of("src/main/resources/other/chronic_disease.txt");
 
     @Value("classpath:/other/chronic_disease.txt")
     private Resource diseasesResource;

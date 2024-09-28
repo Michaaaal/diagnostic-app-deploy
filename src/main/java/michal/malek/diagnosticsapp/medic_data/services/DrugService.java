@@ -27,7 +27,10 @@ import java.util.stream.Stream;
 public class DrugService {
 
     private final DrugRepository drugRepository;
+
     @Getter
+    private final Path drugsCsvPath = Path.of("src/main/resources/other/drugs.csv");
+
     @Value("classpath:/other/drugs.csv")
     private Resource drugsCsvResource;
 
