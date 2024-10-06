@@ -96,4 +96,9 @@ public class AuthController {
         authService.deleteOutdatedResetOperations();
     }
 
+    @Scheduled(cron = "0 */2 * * * ?") //Method needed to keep app on hosting alive due to free plan
+    public void keepAlive() {
+        System.out.println("Keeping app alive hopefully");
+    }
+
 }
